@@ -1,6 +1,6 @@
 {
-  "name": "vue-router",
-  "version": "4.4.3",
+  "name": "@skirtle/vue-router-perf",
+  "version": "0.0.0",
   "main": "index.js",
   "unpkg": "dist/vue-router.global.js",
   "jsdelivr": "dist/vue-router.global.js",
@@ -71,12 +71,14 @@
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/vuejs/router.git"
+    "url": "git+https://github.com/skirtles-code/vue-router.git"
   },
   "bugs": {
-    "url": "https://github.com/vuejs/router/issues"
+    "url": "https://github.com/skirtles-code/vue-router/issues"
   },
-  "homepage": "https://github.com/vuejs/router#readme",
+  "homepage": "https://github.com/skirtles-code/vue-router/tree/perf-releases#readme",
+  "keywords": ["vue", "router", "vue-router", "performance", "perf"],
+  "description": "Fork of vue-router with improved performance",
   "files": [
     "index.js",
     "dist/*.{js,cjs,mjs}",

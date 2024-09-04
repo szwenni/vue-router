@@ -1,3 +1,5 @@
+This is the changelog for `vue-router`. It does not include changes to `@skirtle/vue-router-perf`.
+
 ## [4.4.3](https://github.com/vuejs/router/compare/v4.4.2...v4.4.3) (2024-08-06)
 
 ### Bug Fixes
