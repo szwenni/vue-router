@@ -9,13 +9,13 @@ import chalk from 'chalk'
 import pkg from './package.json' with { type: 'json' }
 import terser from '@rollup/plugin-terser'
 
-const name = pkg.name
+const name = 'vue-router'
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url))
 
 const banner = `/*!
   * ${pkg.name} v${pkg.version}
-  * (c) ${new Date().getFullYear()} Eduardo San Martin Morote
+  * (c) ${new Date().getFullYear()} Eduardo San Martin Morote, skirtle
   * @license MIT
   */`
 

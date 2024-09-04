@@ -15,7 +15,7 @@
 
   "dtsRollup": {
     "enabled": true,
-    "untrimmedFilePath": "./dist/<unscopedPackageName>.d.ts"
+    "untrimmedFilePath": "./dist/vue-router.d.ts"
   },
 
   "tsdocMetadata": {
