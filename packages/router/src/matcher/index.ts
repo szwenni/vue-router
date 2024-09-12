@@ -389,6 +389,7 @@ export function normalizeRouteRecord(
     leaveGuards: new Set(),
     updateGuards: new Set(),
     enterCallbacks: {},
+    mods: {},
     components:
       'components' in record
         ? record.components || null
