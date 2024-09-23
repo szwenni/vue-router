@@ -1,6 +1,6 @@
 {
   "name": "@skirtle/vue-router-perf",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "main": "index.js",
   "unpkg": "dist/vue-router.global.js",
   "jsdelivr": "dist/vue-router.global.js",
