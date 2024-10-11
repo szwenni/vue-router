@@ -388,14 +388,9 @@ export interface Router {
  * @param options - {@link RouterOptions}
  */
 export function createRouter(options: RouterOptions): Router {
-
-  if (options.routerCache && options.routerCache.matcher) {
-    console.log("Router matcher is already there");
-  }
   const matcher = options.routerCache && options.routerCache.matcher ? options.routerCache.matcher : createRouterMatcher(options.routes, options)
   if (options.routerCache && !options.routerCache.matcher) {
     options.routerCache.matcher = matcher;
-    console.log("Setting matcher");
   }
   const parseQuery = options.parseQuery || originalParseQuery
   const stringifyQuery = options.stringifyQuery || originalStringifyQuery
