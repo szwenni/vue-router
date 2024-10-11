@@ -478,6 +478,7 @@ export function createRouter(options: RouterOptions): Router {
         rawLocation,
         currentLocation.path
       )
+      console.log("resolving with string:" + rawLocation);
       const matchedRoute = matcher.resolve(
         { path: locationNormalized.path },
         currentLocation
@@ -545,7 +546,6 @@ export function createRouter(options: RouterOptions): Router {
       // matcher merges the params
       currentLocation.params = encodeParams(currentLocation.params)
     }
-
     const matchedRoute = matcher.resolve(matcherLocation, currentLocation)
     const hash = rawLocation.hash || ''
 
@@ -580,7 +580,6 @@ export function createRouter(options: RouterOptions): Router {
         )
       }
     }
-
     return assign(
       {
         fullPath,
