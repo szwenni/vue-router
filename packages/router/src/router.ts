@@ -478,7 +478,6 @@ export function createRouter(options: RouterOptions): Router {
         rawLocation,
         currentLocation.path
       )
-      console.log("resolving with string:" + rawLocation);
       const matchedRoute = matcher.resolve(
         { path: locationNormalized.path },
         currentLocation
