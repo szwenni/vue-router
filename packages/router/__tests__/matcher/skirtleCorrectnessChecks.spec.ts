@@ -970,14 +970,12 @@ describe('Matcher: extra correctness tests', () => {
     expect(
       matcher.resolve({ path: '/user/1/2' }, currentLocation)
     ).toMatchObject({
-      // name: 'user3', // Routes with trailing slashes get higher scores. Unclear why.
-      name: 'user2',
+      name: 'user3', // Routes with trailing slashes get higher scores. Unclear why.
     })
     expect(
       matcher.resolve({ path: '/user/1/2/' }, currentLocation)
     ).toMatchObject({
-      // name: 'user3', // Ditto.
-      name: 'user2',
+      name: 'user3', // Ditto.
     })
   })
 
@@ -1038,16 +1036,12 @@ describe('Matcher: extra correctness tests', () => {
     expect(
       matcher.resolve({ path: '/user/1/2' }, currentLocation)
     ).toMatchObject({
-      // name: 'user3',
-      // name: 'user4', // The static perf branch switches this
-      name: 'user2',
+      name: 'user3',
     })
     expect(
       matcher.resolve({ path: '/user/1/2/' }, currentLocation)
     ).toMatchObject({
-      // name: 'user3',
-      // name: 'user4', // The static perf branch switches this
-      name: 'user2',
+      name: 'user3',
     })
   })
 
@@ -1663,8 +1657,7 @@ describe('Matcher: extra correctness tests', () => {
       name: undefined,
     })
     expect(matcher.resolve({ path: '/a/b' }, currentLocation)).toMatchObject({
-      // name: 'a', // TODO: This currently fails on main
-      name: undefined,
+      name: 'a',
     })
   })
 
