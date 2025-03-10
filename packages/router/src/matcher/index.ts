@@ -134,7 +134,7 @@ export function createRouterMatcher(
       if (__DEV__ && normalizedRecord.path === '*') {
         throw new Error(
           'Catch all routes ("*") must now be defined using a param with a custom regexp.\n' +
-            'See more at https://router.vuejs.org/guide/migration/#Removed-star-or-catch-all-routes.'
+          'See more at https://router.vuejs.org/guide/migration/#Removed-star-or-catch-all-routes.'
         )
       }
 
@@ -195,9 +195,9 @@ export function createRouterMatcher(
 
     return originalMatcher
       ? () => {
-          // since other matchers are aliases, they should be removed by the original matcher
-          removeRoute(originalMatcher!)
-        }
+        // since other matchers are aliases, they should be removed by the original matcher
+        removeRoute(originalMatcher!)
+      }
       : noop
   }
 
@@ -280,10 +280,10 @@ export function createRouterMatcher(
         // discard any existing params in the current location that do not exist here
         // #1497 this ensures better active/exact matching
         location.params &&
-          paramsFromLocation(
-            location.params,
-            matcher.keys.map(k => k.name)
-          )
+        paramsFromLocation(
+          location.params,
+          matcher.keys.map(k => k.name)
+        )
       )
       // throws if cannot be stringified
       path = matcher.stringify(params)
@@ -297,7 +297,6 @@ export function createRouterMatcher(
           `The Matcher cannot resolve relative paths but received "${path}". Unless you directly called \`matcher.resolve("${path}")\`, this is probably a bug in vue-router. Please open an issue at https://github.com/vuejs/router/issues/new/choose.`
         )
       }
-
       matcher = matcherTree.find(path)
       // matcher should have a value after the loop
 
@@ -344,6 +343,7 @@ export function createRouterMatcher(
 
   // add initial routes
   routes.forEach(route => addRoute(route))
+
 
   function clearRoutes() {
     matcherTree.clear()

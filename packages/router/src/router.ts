@@ -30,7 +30,7 @@ import {
   scrollToPosition,
   _ScrollPositionNormalized,
 } from './scrollBehavior'
-import { createRouterMatcher, PathParserOptions } from './matcher'
+import { createRouterMatcher, PathParserOptions, RouterMatcher } from './matcher'
 import {
   createRouterError,
   ErrorTypes,
@@ -104,6 +104,10 @@ export interface RouterScrollBehavior {
     from: RouteLocationNormalizedLoaded,
     savedPosition: _ScrollPositionNormalized | null
   ): Awaitable<ScrollPosition | false | void>
+}
+
+export interface RouterCacheOptions {
+  matcher: RouterMatcher;
 }
 
 /**
@@ -181,6 +185,7 @@ export interface RouterOptions extends PathParserOptions {
    * `router-link-inactive` will be applied.
    */
   // linkInactiveClass?: string
+  routerCache?: RouterCacheOptions
 }
 
 /**
@@ -383,14 +388,17 @@ export interface Router {
  * @param options - {@link RouterOptions}
  */
 export function createRouter(options: RouterOptions): Router {
-  const matcher = createRouterMatcher(options.routes, options)
+  const matcher = options.routerCache && options.routerCache.matcher ? options.routerCache.matcher : createRouterMatcher(options.routes, options)
+  if (options.routerCache && !options.routerCache.matcher) {
+    options.routerCache.matcher = matcher;
+  }
   const parseQuery = options.parseQuery || originalParseQuery
   const stringifyQuery = options.stringifyQuery || originalStringifyQuery
   const routerHistory = options.history
   if (__DEV__ && !routerHistory)
     throw new Error(
       'Provide the "history" option when calling "createRouter()":' +
-        ' https://router.vuejs.org/api/interfaces/RouterOptions.html#history'
+      ' https://router.vuejs.org/api/interfaces/RouterOptions.html#history'
     )
 
   const beforeGuards = useCallbacks<NavigationGuardWithThis<undefined>>()
@@ -537,7 +545,6 @@ export function createRouter(options: RouterOptions): Router {
       // matcher merges the params
       currentLocation.params = encodeParams(currentLocation.params)
     }
-
     const matchedRoute = matcher.resolve(matcherLocation, currentLocation)
     const hash = rawLocation.hash || ''
 
@@ -567,13 +574,11 @@ export function createRouter(options: RouterOptions): Router {
         )
       } else if (!matchedRoute.matched.length) {
         warn(
-          `No match found for location with path "${
-            rawLocation.path != null ? rawLocation.path : rawLocation
+          `No match found for location with path "${rawLocation.path != null ? rawLocation.path : rawLocation
           }"`
         )
       }
     }
-
     return assign(
       {
         fullPath,
@@ -641,7 +646,7 @@ export function createRouter(options: RouterOptions): Router {
           newTargetLocation.includes('?') || newTargetLocation.includes('#')
             ? (newTargetLocation = locationAsObject(newTargetLocation))
             : // force empty params
-              { path: newTargetLocation }
+            { path: newTargetLocation }
         // @ts-expect-error: force empty params when a string is passed to let
         // the router parse them again
         newTargetLocation.params = {}
@@ -657,8 +662,7 @@ export function createRouter(options: RouterOptions): Router {
             newTargetLocation,
             null,
             2
-          )}\n when navigating to "${
-            to.fullPath
+          )}\n when navigating to "${to.fullPath
           }". A redirect must contain a name or path. This will break in production.`
         )
         throw new Error('Invalid redirect')
@@ -731,11 +735,11 @@ export function createRouter(options: RouterOptions): Router {
       .catch((error: NavigationFailure | NavigationRedirectError) =>
         isNavigationFailure(error)
           ? // navigation redirects still mark the router as ready
-            isNavigationFailure(error, ErrorTypes.NAVIGATION_GUARD_REDIRECT)
+          isNavigationFailure(error, ErrorTypes.NAVIGATION_GUARD_REDIRECT)
             ? error
             : markAsReady(error) // also returns the error
           : // reject any unknown error
-            triggerError(error, toLocation, from)
+          triggerError(error, toLocation, from)
       )
       .then((failure: NavigationFailure | NavigationRedirectError | void) => {
         if (failure) {
@@ -755,7 +759,7 @@ export function createRouter(options: RouterOptions): Router {
               // @ts-expect-error: added only in dev
               (redirectedFrom._count = redirectedFrom._count
                 ? // @ts-expect-error
-                  redirectedFrom._count + 1
+                redirectedFrom._count + 1
                 : 1) > 30
             ) {
               warn(
@@ -1077,7 +1081,7 @@ export function createRouter(options: RouterOptions): Router {
                   isNavigationFailure(
                     failure,
                     ErrorTypes.NAVIGATION_ABORTED |
-                      ErrorTypes.NAVIGATION_DUPLICATED
+                    ErrorTypes.NAVIGATION_DUPLICATED
                   ) &&
                   !info.delta &&
                   info.type === NavigationType.pop
@@ -1207,7 +1211,7 @@ export function createRouter(options: RouterOptions): Router {
     isPush: boolean,
     isFirstNavigation: boolean
   ): // the return is not meant to be used
-  Promise<unknown> {
+    Promise<unknown> {
     const { scrollBehavior } = options
     if (!isBrowser || !scrollBehavior) return Promise.resolve()
 
