@@ -1026,7 +1026,7 @@ export function createRouter(options: RouterOptions): Router {
       const shouldRedirect = handleRedirectRecord(toLocation)
       if (shouldRedirect) {
         pushWithRedirect(
-          assign(shouldRedirect, { replace: true }),
+          assign(shouldRedirect, { replace: true, force: true }),
           toLocation
         ).catch(noop)
         return
@@ -1067,7 +1067,9 @@ export function createRouter(options: RouterOptions): Router {
             // the error is already handled by router.push we just want to avoid
             // logging the error
             pushWithRedirect(
-              (error as NavigationRedirectError).to,
+              assign(locationAsObject((error as NavigationRedirectError).to), {
+                force: true,
+              }),
               toLocation
               // avoid an uncaught rejection, let push call triggerError
             )

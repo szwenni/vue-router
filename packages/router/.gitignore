@@ -4,5 +4,3 @@ old-e2e/reports
 old-e2e/screenshots
 tests_output
 logs
-# copied from root during release
-README.md

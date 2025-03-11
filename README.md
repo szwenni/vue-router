@@ -1,95 +1,118 @@
-# vue-router [![release candidate](https://img.shields.io/npm/v/vue-router.svg)](https://www.npmjs.com/package/vue-router) [![test](https://github.com/vuejs/router/actions/workflows/test.yml/badge.svg)](https://github.com/vuejs/router/actions/workflows/test.yml) [![codecov](https://codecov.io/gh/vuejs/router/graph/badge.svg?token=azNM3FI0d1)](https://codecov.io/gh/vuejs/router)
+# @skirtle/vue-router-perf
 
-> - This is the repository for Vue Router 4 (for Vue 3)
-> - For Vue Router 3 (for Vue 2) see [vuejs/vue-router](https://github.com/vuejs/vue-router).
+## Overview
 
-<h2 align="center">Supporting Vue Router</h2>
+This is a fork of [Vue Router](https://github.com/vuejs/router) with improved performance.
 
-Vue Router is part of the Vue Ecosystem and is an MIT-licensed open source project with its ongoing development made possible entirely by the support of Sponsors. If you would like to become a sponsor, please consider:
+The [`perf-releases`](https://github.com/skirtles-code/vue-router/tree/perf-releases) branch is used to make releases to the npm package `@skirtle/vue-router-perf`.
 
-- [Become a Sponsor on GitHub](https://github.com/sponsors/posva)
-- [One-time donation via PayPal](https://paypal.me/posva)
+The package `@skirtle/vue-router-perf` is intended to be a drop-in replacement for `vue-router`. It includes performance improvements that aren't yet available in the official package.
 
-<!--sponsors start-->
+It should be much faster for applications with large numbers of routes. The performance improvements affect both the creation of the router and the resolving of routes.
 
-<h4 align="center">Silver Sponsors</h4>
-<p align="center">
-    <a href="https://route4me.com" target="_blank" rel="noopener noreferrer">
-    <picture>
-      <source srcset="https://posva-sponsors.pages.dev/logos/route4me.png" media="(prefers-color-scheme: dark)" height="42px" alt="Route Optimizer and Route Planner Software" />
-      <img src="https://posva-sponsors.pages.dev/logos/route4me.png" height="42px" alt="Route Optimizer and Route Planner Software" />
-    </picture>
-  </a>
-    <a href="https://www.prefect.io/" target="_blank" rel="noopener noreferrer">
-    <picture>
-      <source srcset="https://posva-sponsors.pages.dev/logos/prefectlogo-dark.svg" media="(prefers-color-scheme: dark)" height="42px" alt="Prefect" />
-      <img src="https://posva-sponsors.pages.dev/logos/prefectlogo-light.svg" height="42px" alt="Prefect" />
-    </picture>
-  </a>
-    <a href="https://www.vuemastery.com/" target="_blank" rel="noopener noreferrer">
-    <picture>
-      <source srcset="https://posva-sponsors.pages.dev/logos/vuemastery-dark.png" media="(prefers-color-scheme: dark)" height="42px" alt="VueMastery" />
-      <img src="https://posva-sponsors.pages.dev/logos/vuemastery-light.svg" height="42px" alt="VueMastery" />
-    </picture>
-  </a>
-</p>
+The benchmark below compares `@skirtle/vue-router-perf` to `vue-router`:
 
-<h4 align="center">Bronze Sponsors</h4>
-<p align="center">
-    <a href="https://storyblok.com" target="_blank" rel="noopener noreferrer">
-    <picture>
-      <source srcset="https://posva-sponsors.pages.dev/logos/storyblok.png" media="(prefers-color-scheme: dark)" height="26px" alt="Storyblok" />
-      <img src="https://posva-sponsors.pages.dev/logos/storyblok.png" height="26px" alt="Storyblok" />
-    </picture>
-  </a>
-    <a href="https://ui.nuxt.com/pro" target="_blank" rel="noopener noreferrer">
-    <picture>
-      <source srcset="https://posva-sponsors.pages.dev/logos/nuxt-dark.svg" media="(prefers-color-scheme: dark)" height="26px" alt="Nuxt UI Pro Templates" />
-      <img src="https://posva-sponsors.pages.dev/logos/nuxt-light.svg" height="26px" alt="Nuxt UI Pro Templates" />
-    </picture>
-  </a>
-    <a href="https://www.vuejs.de" target="_blank" rel="noopener noreferrer">
-    <picture>
-      <source srcset="https://avatars.githubusercontent.com/u/4183726?u=6b50a8ea16de29d2982f43c5640b1db9299ebcd1&v=4" media="(prefers-color-scheme: dark)" height="26px" alt="Antony Konstantinidis" />
-      <img src="https://avatars.githubusercontent.com/u/4183726?u=6b50a8ea16de29d2982f43c5640b1db9299ebcd1&v=4" height="26px" alt="Antony Konstantinidis" />
-    </picture>
-  </a>
-    <a href="https://stormier.ninja" target="_blank" rel="noopener noreferrer">
-    <picture>
-      <source srcset="https://avatars.githubusercontent.com/u/2486424?u=7b0c73ae5d090ce53bf59473094e9606fe082c59&v=4" media="(prefers-color-scheme: dark)" height="26px" alt="Stanislas Ormières" />
-      <img src="https://avatars.githubusercontent.com/u/2486424?u=7b0c73ae5d090ce53bf59473094e9606fe082c59&v=4" height="26px" alt="Stanislas Ormières" />
-    </picture>
-  </a>
-</p>
+- [Benchmark](https://play.vuejs.org/#eNq1VmFv2zYQ/SuEMMDyYkv2ku2D6wTZigzL0KyBm+6LFbSydLZZS6RAUo4Lw/+9R1Ky5MRSXBQNAoi6e3f37vhMauv8mWXeOgdn5IxlJGimiASVZ1cBo2nGhSK/klCS/3OY8FyBIHPBU9LBiL4whk4D8B7EvABfyxUVKgG/iupn6K5Ct0RAGCm6BrKrKqA/YBFnUpHJ+48PNx8+3X1893B7/+72ZkIuycVgMKgQJq9E8/RRG+dcEDcBRSiaBm/wMX6Z5A05O6Ndsg0YKeK9LJdL1xgIyUK1HJHPfi5B/LKlu889a484smbA1Ihsd6VtSZNYABuRqTUQbMom6HR6hyGkDKphRjQ+BRbGKWVtwHJRsu8kVKrO3n+cfEMDhwQFT8AN8C8+67YwOAyKQgULLr6+DKjwuF92UdjM+64bMHzHjcwZCoMzEqFEFDyAVK5dWp1hYvN2BynW+Qe7xUe5p6hkUUZaeLm3SwscHYt2u0U3VhPH6QiQPFlbPlbTRVErR8owcYrdovzucBgeYljsvtSxT4YDTK4jT9QsJWeXVf6iakFWeAUvtyZbTN8K8Ie/nb8OMtJ7Hab1dlpCg5xzbpE4XTNgOz5FU/NjLo8Fdzod9MjgsUfs89GMbL8ZC+4Wc9DjkyrEM+WS6DOGizRkEXiMP7mmjgZYToioaWp/cHmH6npuP9SZzmi4TgeP+H+sKOlbQnaPW7kd0dRBgeEPF2hrXJ/YTc3XfE0DGP7sAWCB1waAChr79hrDCwxfFKRZgqTxjZDxLFcK1XIdJTRaXQbOggfO1SRnZAYsWqahWMmxb0E2QIWzBMiMixiEsWhbudLr5dV9GK3CBYx9XNftb/WwUJsvHBPTI2WLmgeXx/PHV9WdiaD4wLXd1rXnKf433UDsDrtkt0uxkxb4sA3ewqbpKm8uZmRxOjezyadww4XeHFzjqtplp+coiWfInC68L5Iz/K4x50Lg6PuHJiDeZ3pbZODgPWRzBk6YJPzpX2NTIofi+MeYJUSrI/YvcqNtgXOPigWxhsDZ+1CJC1DWffPhP9jgeu9MeZwniG5xGn3kmqOF/YX3BtKu4QzbW/PlhDJ6kDcbBUyWTWmi5kA1+MDBnXrb0npF99y7KA9inKL9MuunYfZsjtZxmKRSg+W8VCqTI9/PWbZaeDj5ml6uL7wL79yP9elfWT2QaX8m+BOOEwvWum2SXFOlJvx3VESQH8NacZ7IfpjRxlLPgdd/YG+/48028zG7T1kMG5N7P9jdN9wUz08=)
 
-<!--sponsors end-->
+Using a Playground as a benchmark isn't entirely reliable, but it gives a sense of the improvements that are possible.
 
----
+For more details of the performance improvements implemented in this fork see <https://github.com/vuejs/router/pull/2148>.
 
-Get started with the [documentation](https://router.vuejs.org).
+Most projects won't have enough routes to see a significant benefit. Manually creating thousands of routes is rare, but tools such as `@nuxtjs/i18n` can automatically generate very large numbers of routes.
 
-## Quickstart
+## Installation
 
-- Via CDN: `<script src="https://unpkg.com/vue-router@4"></script>`
-- In-browser playground on [CodeSandbox](https://codesandbox.io/s/vue-router-4-reproduction-hb9lh)
-- Add it to an existing Vue Project:
+While `@skirtle/vue-router-perf` can be used directly, it is intended to be used via a resolution override instead. This tells your package manager to install `@skirtle/vue-router-perf` in place of `vue-router`. Other code can continue to import from `vue-router`, unaware that it is using the replacement package.
 
-  ```bash
-  npm install vue-router@4
-  ```
+The details depend on which package manager you're using. 
 
-## Changes from Vue Router 3
+### npm
 
-Please consult the [Migration Guide](https://router.vuejs.org/guide/migration/).
+If you're using `vue-router` as a direct dependency in your project then you'll need to update that dependency to use the fork instead:
 
-## Contributing
+```json
+{
+  "dependencies": {
+    "vue-router": "npm:@skirtle/vue-router-perf@^0.0.0"
+  }
+}
+```
 
-See [Contributing Guide](https://github.com/vuejs/router/blob/main/.github/contributing.md).
+That previous step isn't necessary if you're using `vue-router` indirectly, e.g. via Nuxt.
 
-## Special Thanks
+You'll then need to add the [`overrides`](https://docs.npmjs.com/cli/v10/configuring-npm/package-json#overrides) option to your `package.json`. This ensures that your other dependencies will also use the fork, rather than pulling in a separate copy of `vue-router`:
 
-<a href="https://www.browserstack.com">
-  <img src="https://github.com/vuejs/vue-router/raw/dev/assets/browserstack-logo-600x315.png" height="80" title="BrowserStack Logo" alt="BrowserStack Logo" />
-</a>
+```json
+{
+  "overrides": {
+    "vue-router": "npm:@skirtle/vue-router-perf@^0.0.0"
+  }
+}
+```
 
-Special thanks to [BrowserStack](https://www.browserstack.com) for letting the maintainers use their service to debug browser specific issues.
+Then run `npm install`.
+
+### yarn
+
+If you're using `vue-router` as a direct dependency in your project then you'll need to update that dependency to use the fork instead:
+
+```json
+{
+  "dependencies": {
+    "vue-router": "npm:@skirtle/vue-router-perf@^0.0.0"
+  }
+}
+```
+
+That previous step isn't necessary if you're using `vue-router` indirectly, e.g. via Nuxt.
+
+You'll then need to add the [`resolutions`](https://classic.yarnpkg.com/lang/en/docs/selective-version-resolutions/) option to your `package.json`. This ensures that your other dependencies will also use the fork, rather than pulling in a separate copy of `vue-router`:
+
+```json
+{
+  "resolutions": {
+    "vue-router": "npm:@skirtle/vue-router-perf@^0.0.0"
+  }
+}
+```
+
+Then run `yarn install`.
+
+### pnpm
+
+Add [`pnpm.overrides`](https://pnpm.io/package_json#pnpmoverrides) to your `package.json`:
+
+```json
+{
+  "pnpm": {
+    "overrides": {
+      "vue-router": "npm:@skirtle/vue-router-perf@^0.0.0"
+    }
+  }
+}
+```
+
+Then run `pnpm install`.
+
+## Why a separate package?
+
+The changes in this fork can't currently be merged into the official Vue Router. They increase the bundle size (by about 2KB) and compromise the long-term maintainability of the code. It isn't worth it for the relatively small number of projects that would benefit.
+
+Work is already underway to try to implement similar performance improvements in the official package. The first step is to make the *matcher* pluggable, rather than being hardcoded internally. That will allow applications to choose between extra features, performance and bundle size. See <https://github.com/vuejs/router/pull/2148#issuecomment-2270491554> for more details.
+
+This package exists for those who need the performance improvements now, rather than waiting.
+
+This package should be compatible with all documented functionality of Vue Router and passes all its unit tests. There are some known differences with resolving routes in undocumented edge cases, but you're very unlikely to hit those cases in practice.
+
+The intention is to maintain this package until Vue Router achieves similar performance.
+
+## Compatibility
+
+The table below lists equivalent versions:
+
+| vue-router | @skirtle/vue-router-perf |
+|:----------:|:------------------------:|
+|   4.5.0    |          0.1.0           |
+|   4.4.5    |          0.0.2           |
+|   4.4.4    |          0.0.1           |
+|   4.4.3    |          0.0.0           |
