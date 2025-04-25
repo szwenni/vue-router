@@ -112,6 +112,7 @@ The table below lists equivalent versions:
 
 | vue-router | @skirtle/vue-router-perf |
 |:----------:|:------------------------:|
+|   4.5.1    |          0.1.1           |
 |   4.5.0    |          0.1.0           |
 |   4.4.5    |          0.0.2           |
 |   4.4.4    |          0.0.1           |
