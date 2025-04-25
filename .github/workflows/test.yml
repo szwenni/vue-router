@@ -4,12 +4,14 @@ on:
   push:
     branches:
       - main
+      - perf-releases
     paths-ignore:
       - 'packages/docs/**'
       - 'packages/playground/**'
   pull_request:
     branches:
       - main
+      - perf-releases
     paths-ignore:
       - 'packages/docs/**'
       - 'packages/playground/**'
