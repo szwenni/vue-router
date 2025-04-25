@@ -303,6 +303,7 @@ export const RouterLinkImpl = /*#__PURE__*/ defineComponent({
       type: String as PropType<RouterLinkProps['ariaCurrentValue']>,
       default: 'page',
     },
+    viewTransition: Boolean,
   },
 
   useLink,
@@ -455,5 +456,5 @@ const getLinkClass = (
   propClass != null
     ? propClass
     : globalClass != null
-    ? globalClass
-    : defaultClass
+      ? globalClass
+      : defaultClass
