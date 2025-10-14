@@ -15,8 +15,10 @@ import type {
   _PathParserOptions,
 } from './pathParserRanker'
 
+import { PATH_PARSER_OPTIONS_DEFAULTS } from './pathParserRanker'
+
 import { warn } from '../warning'
-import { assign, noop } from '../utils'
+import { assign, mergeOptions, noop } from '../utils'
 import type { RouteRecordNameGeneric, _RouteRecordProps } from '../typed-routes'
 
 /**
@@ -63,8 +65,8 @@ export function createRouterMatcher(
     NonNullable<RouteRecordNameGeneric>,
     RouteRecordMatcher
   >()
-  globalOptions = mergeOptions(
-    { strict: false, end: true, sensitive: false } as PathParserOptions,
+  globalOptions = mergeOptions<PathParserOptions>(
+    PATH_PARSER_OPTIONS_DEFAULTS,
     globalOptions
   )
 
@@ -266,7 +268,7 @@ export function createRouterMatcher(
       name = matcher.record.name
       params = assign(
         // paramsFromLocation is a new object
-        paramsFromLocation(
+        pickParams(
           currentLocation.params,
           // only keep params that exist in the resolved location
           // only keep optional params coming from a parent record
@@ -280,7 +282,7 @@ export function createRouterMatcher(
         // discard any existing params in the current location that do not exist here
         // #1497 this ensures better active/exact matching
         location.params &&
-          paramsFromLocation(
+          pickParams(
             location.params,
             matcher.keys.map(k => k.name)
           )
@@ -360,7 +362,13 @@ export function createRouterMatcher(
   }
 }
 
-function paramsFromLocation(
+/**
+ * Picks an object param to contain only specified keys.
+ *
+ * @param params - params object to pick from
+ * @param keys - keys to pick
+ */
+function pickParams(
   params: MatcherLocation['params'],
   keys: string[]
 ): MatcherLocation['params'] {
@@ -418,7 +426,7 @@ export function normalizeRouteRecord(
  * components. Also accept a boolean for components.
  * @param record
  */
-function normalizeRecordProps(
+export function normalizeRecordProps(
   record: RouteRecordRaw
 ): Record<string, _RouteRecordProps> {
   const propsObject = {} as Record<string, _RouteRecordProps>
@@ -461,18 +469,6 @@ function mergeMetaFields(matched: MatcherLocation['matched']) {
   )
 }
 
-function mergeOptions<T extends object>(
-  defaults: T,
-  partialOptions: Partial<T>
-): T {
-  const options = {} as T
-  for (const key in defaults) {
-    options[key] = key in partialOptions ? partialOptions[key]! : defaults[key]
-  }
-
-  return options
-}
-
 type ParamKey = RouteRecordMatcher['keys'][number]
 
 function isSameParam(a: ParamKey, b: ParamKey): boolean {
@@ -510,7 +506,7 @@ function checkSameParams(a: RouteRecordMatcher, b: RouteRecordMatcher) {
  * @param mainNormalizedRecord - RouteRecordNormalized
  * @param parent - RouteRecordMatcher
  */
-function checkChildMissingNameWithEmptyPath(
+export function checkChildMissingNameWithEmptyPath(
   mainNormalizedRecord: RouteRecordNormalized,
   parent?: RouteRecordMatcher
 ) {
