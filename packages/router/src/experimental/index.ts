@@ -55,7 +55,7 @@ export { mergeRouteRecord as _mergeRouteRecord } from './router'
 
 // in the new experimental router, there are only parents
 // this should create type errors if someone is realying on children
-declare module 'vue-router' {
+declare module '@skirtle/vue-router-perf' {
   export interface RouteLocationMatched {
     /**
      * The experimental router uses a `parent` property instead of `children`.
