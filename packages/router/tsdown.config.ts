@@ -1,5 +1,10 @@
 import { type Options } from 'tsdown'
 import pkg from './package.json' with { type: 'json' }
+import fs from 'node:fs/promises'
+import { dirname, resolve } from 'node:path'
+import { fileURLToPath } from 'node:url'
+
+const __dirname = dirname(fileURLToPath(import.meta.url))
 
 const banner = `
 /*!
@@ -34,6 +39,17 @@ const commonOptions = {
     __FEATURE_PROD_DEVTOOLS__: `__VUE_PROD_DEVTOOLS__`,
   },
   dts: false,
+  // TODO: remove in v5
+  async onSuccess() {
+    // write a stub file for vue-router.esm-bundler.js
+    await fs.writeFile(
+      resolve(__dirname, 'dist/vue-router.esm-bundler.js'),
+      `
+console.warn("[vue-router]: importing from 'vue-router/dist/vue-router.esm-bundler.js' is deprecated. Use 'vue-router' directly.")
+export * from './vue-router.mjs'
+`.trimStart()
+    )
+  },
 } satisfies Options
 
 const esm = {
@@ -45,6 +61,34 @@ const esm = {
   platform: 'neutral',
   dts: true,
   // sourcemap: true,
+} satisfies Options
+
+const esmBrowser = {
+  ...commonOptions,
+  outputOptions: {
+    ...commonOptions.outputOptions,
+    dir: undefined, // must be unset with file
+    file: 'dist/vue-router.esm-browser.js',
+  },
+  define: {
+    ...commonOptions.define,
+    __DEV__: 'true',
+    __FEATURE_PROD_DEVTOOLS__: 'true',
+  },
+} satisfies Options
+
+const esmBrowserProd = {
+  ...esmBrowser,
+  minify: true,
+  outputOptions: {
+    ...esmBrowser.outputOptions,
+    file: 'dist/vue-router.esm-browser.prod.js',
+  },
+  define: {
+    ...esmBrowser.define,
+    __DEV__: 'false',
+    __FEATURE_PROD_DEVTOOLS__: 'false',
+  },
 } satisfies Options
 
 const cjs = {
@@ -106,6 +150,8 @@ const iifeProd = {
 export default [
   //
   esm,
+  esmBrowser,
+  esmBrowserProd,
   cjs,
   cjsProd,
   iife,
